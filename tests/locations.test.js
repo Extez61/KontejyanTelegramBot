@@ -5,9 +5,10 @@ const {provinceOptions,districtOptions}=require('../locations');
 const {fetchSchoolOptions,matchPlace}=require('../eokul');
 const {Store}=require('../db');
 const {EokulBot}=require('../bot');
-test('Ready dataset contains 81 unique provinces and 973 districts',()=>{
+test('Ready MEB dataset contains 81 unique provinces with valid districts',()=>{
  const provinces=provinceOptions();assert.equal(provinces.length,81);assert.equal(new Set(provinces.map(([id])=>id)).size,81);
- assert.equal(provinces.reduce((n,[id])=>n+districtOptions(id).length,0),973);
+ const data=require('../locations.json');assert.equal(data.source,'https://eokulyd.meb.gov.tr/ortaogretim/okl/ook06006.aspx');
+ assert.equal(data.version,2);for(const [id] of provinces){const districts=districtOptions(id);assert.ok(districts.length>0);assert.equal(new Set(districts.map(([id])=>id)).size,districts.length);}
  assert.ok(districtOptions('34').some(([,name])=>name==='KADIKÖY'));
  assert.deepEqual(districtOptions('missing'),[]);
 });

@@ -13,11 +13,11 @@ Okulunu ve sınıflarını seç; kontenjan değişince etiketli bildirim al.
 - İl/ilçe listelerini yerelden açar. İller **İSTANBUL (34)** biçimindedir; adla veya plakayla aranabilir.
 - İlçedeki seçilen türden okulların kontenjanlarını listeler.
 - Proxy, önbellek, hazır oturum ve sınırlı paralel denemelerle beklemeyi azaltır.
-- Saatleri Türkiye saatine göre **23:25:53** biçiminde, saniyeli gösterir.
+- Saatleri Türkiye saatine göre **23:59:59** biçiminde, saniyeli gösterir.
 
 ## Gerekenler
 
-- **Node.js 24 veya üzeri** ve npm — Python gerekmez.
+- **Node.js 24 veya üzeri** ve npm.
 - [BotFather](https://t.me/BotFather) üzerinden alınmış Telegram bot token'ı.
 - Proxy kullanacaksan çalışan bir proxy listesi.
 - Arka planda çalıştırmak için isteğe bağlı PM2.
@@ -92,7 +92,7 @@ pm2 stop ebot
 
 Sunucu açılışında otomatik başlatmak için `pm2 startup` komutunun verdiği talimatı uygula, ardından `pm2 save` çalıştır.
 
-**Eski Python sürümünden geçiyorsan:** Önce eski botu durdur. `.env`, `proxies.txt` ve SQLite dosyalarını yedekle.
+**Mevcut kurulumdan geçiyorsan:** Önce eski botu durdur. `.env`, `proxies.txt` ve SQLite dosyalarını yedekle.
 Yeni dosyaları aynı klasöre koyup kurulumu tamamla. Sonra yalnızca eski `ebot` tanımını yenile:
 
 ```bash
@@ -245,7 +245,7 @@ tail -n 80 logs/bot-error.log
 Örnek (temsili):
 
 ```text
-2026-10-27 23:25:53+03:00 ERROR [school.selection_failed] ... | trace_id="abc12345" where="at ... (eokul.js:27:28)" hint="Proxy/hedef bağlantısını, portu ve ağ erişimini kontrol et."
+2026-10-27 23:59:59+03:00 ERROR [school.selection_failed] ... | trace_id="abc12345" where="at ... (eokul.js:27:28)" hint="Proxy/hedef bağlantısını, portu ve ağ erişimini kontrol et."
   error[0]: Error stage=school.cache_load: ...
   cause[1]: Error code=ECONNREFUSED stage=district: ...
 ```
@@ -278,11 +278,29 @@ yalnızca `ebot` tanımını yeniden oluştur ki yeni log yolları uygulansın.
 npm test
 ```
 
-132 yerel test; takip ekleme/güncelleme, SQLite, proxy, paralel istek iptali, önbellek ve komut akışlarını kapsar.
+138 yerel test; takip ekleme/güncelleme, SQLite, proxy, paralel istek iptali, önbellek ve komut akışlarını kapsar.
 Testlerde Telegram/MEB bağlantıları taklit edilir; canlı sunucu ve hız doğrulaması yerine geçmez.
 
-Hazır il/ilçe verisi [Türkiye API](https://turkiyeapi.dev/api/v1/provinces) üzerinden alınmıştır.
-İdari listeler nadiren değişebilir; yerel dosyanın güncellenmesi gerekebilir.
+Hazır il/ilçe seçenekleri, kontenjan sorgularının yapıldığı
+[MEB e-Okul sayfasının](https://eokulyd.meb.gov.tr/ortaogretim/okl/ook06006.aspx)
+il/ilçe alanlarından alınır. Bu sayfa ayrı bir REST API değil,
+botun da kullandığı form tabanlı kaynaktır. MEB'in `BAKANLIK` seçeneği il olmadığı için menüye eklenmez;
+ilçe seçenekleri MEB'in sunduğu ad ve kimliklerle saklanır.
+
+Menüler yine yerel `locations.json` dosyasından anında açılır; her seçimde liste indirilmez.
+MEB listesi değişirse, bot klasöründe şu komutla yenileyebilirsin:
+
+```bash
+npm run refresh:locations
+```
+
+Bu komut `.env` proxy ayarlarını kullanır; bot token'ına ihtiyaç duymaz.
+81 ilin tamamı başarıyla alınmadan mevcut dosyanın üzerine yazılmaz.
+İşlem birkaç dakika sürebilir. Güncelleme bitince botu yeniden başlat:
+
+```bash
+pm2 restart ebot --update-env
+```
 Bu proje MEB'in resmi hizmeti değildir. Kontenjan bilgileri bilgilendirme amaçlıdır.
 
 

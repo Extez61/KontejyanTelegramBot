@@ -171,7 +171,7 @@ class EokulBot {
       await this.edit(ctx,LISTS.ilce.title,optionKeyboard('ilce',items));
     }else if(kind==='ilce') {
       Object.assign(f,{local_ilce:val,ilce_ad:label});
-      const key=`schools-local:v1:${tur}:${f.local_il}:${val}`;
+      const key=`schools-local:meb:v2:${tur}:${f.local_il}:${val}`;
       const cached=this.peekList(key);
       try {
         // Telegram bekleme mesajı ile MEB sorgusu aynı anda başlasın.

@@ -16,4 +16,4 @@ proxyAgent(url).destroy();
 if(classKeyboard().length!==5)throw new Error('Klavye testi başarısız');
 console.log(`Node.js ${process.versions.node}: OK`);
 console.log('SQLite, HTML, proxy ve bot modülleri: OK');
-console.log('Python gerekmez. Telegram/MEB ağına bağlantı yapılmadı.');
+console.log('Telegram/MEB ağına bağlantı yapılmadı.');
