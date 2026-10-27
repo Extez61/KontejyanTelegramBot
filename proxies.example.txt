@@ -1,0 +1,3 @@
+# ÖRNEKTİR: Gerçek proxy bilgilerinizle değiştirin. Bu satır bağlantı için kullanılamaz.
+# Biçim: IP:PORT:USERNAME:PASSWORD (port alanı zorunludur).
+192.0.2.1:8080:exampleusername:examplepass11

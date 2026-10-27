@@ -1,0 +1,26 @@
+{
+  "name": "eokul-kontenjan-bot",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Node.js Telegram e-Okul kontenjan takip botu",
+  "type": "commonjs",
+  "main": "bot.js",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "node bot.js",
+    "test": "node --test",
+    "check": "node check.js"
+  },
+  "dependencies": {
+    "axios": "1.21.0",
+    "cheerio": "1.2.0",
+    "dotenv": "18.0.9",
+    "https-proxy-agent": "7.0.6",
+    "iconv-lite": "0.7.3",
+    "socks-proxy-agent": "8.0.5",
+    "tough-cookie": "6.0.2"
+  },
+  "license": "MIT"
+}
